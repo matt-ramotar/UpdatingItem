@@ -124,6 +124,6 @@ private fun Project.addKspDependencyForAllTargets(
 }
 
 fun Project.configureMavenPublishing() = extensions.configure<MavenPublishBaseExtension> {
-    publishToMavenCentral(CENTRAL_PORTAL)
+    publishToMavenCentral(CENTRAL_PORTAL, automaticRelease = true)
     signAllPublications()
 }
