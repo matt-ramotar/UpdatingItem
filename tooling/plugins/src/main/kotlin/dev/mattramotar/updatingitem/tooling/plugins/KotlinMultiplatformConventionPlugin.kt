@@ -1,6 +1,7 @@
 package dev.mattramotar.updatingitem.tooling.plugins
 
 import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import com.vanniktech.maven.publish.SonatypeHost.Companion.CENTRAL_PORTAL
 import com.vanniktech.maven.publish.SonatypeHost.Companion.S01
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import org.gradle.api.Plugin
@@ -123,6 +124,6 @@ private fun Project.addKspDependencyForAllTargets(
 }
 
 fun Project.configureMavenPublishing() = extensions.configure<MavenPublishBaseExtension> {
-    publishToMavenCentral(S01)
+    publishToMavenCentral(CENTRAL_PORTAL)
     signAllPublications()
 }

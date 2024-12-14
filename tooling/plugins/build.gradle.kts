@@ -24,15 +24,6 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        register("androidApplicationPlugin") {
-            id = "plugin.updatingitem.android.application"
-            implementationClass = "dev.mattramotar.updatingitem.tooling.plugins.AndroidApplicationConventionPlugin"
-        }
-
-        register("androidComposePlugin") {
-            id = "plugin.updatingitem.android.compose"
-            implementationClass = "dev.mattramotar.updatingitem.tooling.plugins.AndroidComposeConventionPlugin"
-        }
 
         register("androidLibraryPlugin") {
             id = "plugin.updatingitem.android.library"

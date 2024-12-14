@@ -1,5 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
+import dev.mattramotar.updatingitem.tooling.extensions.android
+
 plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.compose.compiler)
@@ -28,4 +30,3 @@ kotlin {
         }
     }
 }
-

@@ -7,10 +7,6 @@ buildscript {
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
         maven("https://oss.sonatype.org/content/repositories/snapshots")
     }
-
-    dependencies {
-        classpath(libs.maven.publish.plugin)
-    }
 }
 
 plugins {
@@ -24,5 +20,6 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.buildkonfig) apply false
     alias(libs.plugins.kotlin.plugin.parcelize) apply false
+    alias(libs.plugins.maven.publish) apply false
 }
 
