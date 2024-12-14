@@ -1,3 +1,5 @@
+![Updating Item](https://github.com/user-attachments/assets/c5d15d50-f83d-443c-a109-2b22027f90b6)
+
 # UpdatingItem
 
 Designed to enable fine-grained, item-level updates for dynamic lists to minimize global recompositions. It uses stable item references and a
