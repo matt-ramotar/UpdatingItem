@@ -1,12 +1,12 @@
-package dev.mattramotar.updatingitem.core.impl
+package dev.mattramotar.updatingitem.runtime.impl
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import app.cash.molecule.RecompositionMode
 import app.cash.molecule.launchMolecule
-import dev.mattramotar.updatingitem.core.UpdatingItemAction
-import dev.mattramotar.updatingitem.core.UpdatingItemLoadState
-import dev.mattramotar.updatingitem.core.UpdatingItem
+import dev.mattramotar.updatingitem.runtime.UpdatingItemAction
+import dev.mattramotar.updatingitem.runtime.UpdatingItemLoadState
+import dev.mattramotar.updatingitem.runtime.UpdatingItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

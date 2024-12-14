@@ -1,5 +1,7 @@
 package dev.mattramotar.updatingitem.tooling.plugins
 
+import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import com.vanniktech.maven.publish.SonatypeHost.Companion.S01
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -20,6 +22,7 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             apply("org.jetbrains.kotlin.multiplatform")
             apply("dev.mokkery")
             apply("org.jetbrains.kotlinx.kover")
+            apply("com.vanniktech.maven.publish")
         }
 
         version = libs.findVersion("updatingitem")
@@ -91,6 +94,8 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 }
             }
         }
+
+        configureMavenPublishing()
     }
 }
 
@@ -115,4 +120,9 @@ private fun Project.addKspDependencyForAllTargets(
                 )
             }
     }
+}
+
+fun Project.configureMavenPublishing() = extensions.configure<MavenPublishBaseExtension> {
+    publishToMavenCentral(S01)
+    signAllPublications()
 }

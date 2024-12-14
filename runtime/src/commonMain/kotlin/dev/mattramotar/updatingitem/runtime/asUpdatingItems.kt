@@ -1,7 +1,7 @@
-package dev.mattramotar.updatingitem.core
+package dev.mattramotar.updatingitem.runtime
 
-import dev.mattramotar.updatingitem.core.impl.DefaultNormalizer
-import dev.mattramotar.updatingitem.core.impl.Normalizer
+import dev.mattramotar.updatingitem.runtime.impl.DefaultNormalizer
+import dev.mattramotar.updatingitem.runtime.impl.Normalizer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

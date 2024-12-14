@@ -1,6 +1,6 @@
-package dev.mattramotar.updatingitem.core.impl
+package dev.mattramotar.updatingitem.runtime.impl
 
-import dev.mattramotar.updatingitem.core.UpdatingItem
+import dev.mattramotar.updatingitem.runtime.UpdatingItem
 import kotlinx.coroutines.flow.StateFlow
 
 /**

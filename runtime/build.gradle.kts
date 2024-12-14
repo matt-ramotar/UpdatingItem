@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "dev.mattramotar.updatingitem.core"
+    namespace = "dev.mattramotar.updatingitem.runtime"
 
     testOptions {
         unitTests {

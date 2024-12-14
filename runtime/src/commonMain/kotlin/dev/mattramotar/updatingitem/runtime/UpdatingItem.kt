@@ -1,4 +1,4 @@
-package dev.mattramotar.updatingitem.core
+package dev.mattramotar.updatingitem.runtime
 
 import androidx.compose.runtime.Composable
 import kotlinx.coroutines.flow.StateFlow

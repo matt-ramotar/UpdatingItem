@@ -1,12 +1,12 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package dev.mattramotar.updatingitem.core.test
+package dev.mattramotar.updatingitem.runtime.test
 
 import app.cash.molecule.RecompositionMode
 import app.cash.turbine.test
-import dev.mattramotar.updatingitem.core.UpdatingItemAction
-import dev.mattramotar.updatingitem.core.UpdatingItemLoadState
-import dev.mattramotar.updatingitem.core.impl.DefaultNormalizer
+import dev.mattramotar.updatingitem.runtime.UpdatingItemAction
+import dev.mattramotar.updatingitem.runtime.UpdatingItemLoadState
+import dev.mattramotar.updatingitem.runtime.impl.DefaultNormalizer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
