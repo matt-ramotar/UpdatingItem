@@ -60,6 +60,7 @@ jobs:
 
       - name: Upload Artifacts to Maven Central
         run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
+        if: "!endsWith(env.VERSION_NAME, '-SNAPSHOT')"
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}

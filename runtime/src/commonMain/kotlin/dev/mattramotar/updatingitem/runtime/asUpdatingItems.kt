@@ -1,18 +1,19 @@
 package dev.mattramotar.updatingitem.runtime
 
-import dev.mattramotar.updatingitem.runtime.impl.DefaultNormalizer
-import dev.mattramotar.updatingitem.runtime.impl.Normalizer
+import dev.mattramotar.updatingitem.runtime.normalizer.DefaultNormalizer
+import dev.mattramotar.updatingitem.runtime.normalizer.Normalizer
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 /**
- * Transforms a [StateFlow] of items into a [StateFlow] of [UpdatingItem]s. This function connects
+ * Transforms a [Flow] of items into a [StateFlow] of [UpdatingItem]s. This function connects
  * your raw data stream (e.g., from a database, network, or paging) to a [Normalizer] that tracks
  * stable item references and issues minimal updates. The result is a flow of stable [UpdatingItem]
  * instances that can be used to drive efficient UIs.
  *
- * When the source [StateFlow] emits a new list:
+ * When the source [Flow] emits a new list:
  * - The [Normalizer] updates its internal store of items.
  * - Items that have changed trigger localized updates, while unchanged items remain stable, preventing unnecessary
  *   global recompositions.
@@ -25,11 +26,11 @@ import kotlinx.coroutines.launch
  * @return A [StateFlow] of [UpdatingItem]s. Observers of this flow receive stable item references
  * that only recompose on actual item-level changes.
  */
-fun <ItemId : Any, ItemValue : Any> StateFlow<List<ItemValue>>.asUpdatingItems(
+fun <ItemId : Any, ItemValue : Any> Flow<List<ItemValue>>.asUpdatingItems(
     coroutineScope: CoroutineScope,
     idExtractor: (ItemValue) -> ItemId,
 ): StateFlow<List<UpdatingItem<ItemId, ItemValue>>> {
-    val normalizer = DefaultNormalizer( coroutineScope, idExtractor)
+    val normalizer = DefaultNormalizer(coroutineScope, idExtractor)
 
     // Launch a coroutine to listen to the upstream items
     // and update the normalizer whenever they change.

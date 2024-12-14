@@ -23,4 +23,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "updatingitem"
 
- include(":runtime")
+include(":runtime")

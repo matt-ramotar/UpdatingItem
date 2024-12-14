@@ -1,11 +1,10 @@
-package dev.mattramotar.updatingitem.runtime.impl
+package dev.mattramotar.updatingitem.runtime.normalizer
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import app.cash.molecule.RecompositionMode
 import app.cash.molecule.launchMolecule
-import dev.mattramotar.updatingitem.runtime.UpdatingItemAction
-import dev.mattramotar.updatingitem.runtime.UpdatingItemLoadState
 import dev.mattramotar.updatingitem.runtime.UpdatingItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -75,13 +74,14 @@ internal class DefaultNormalizer<ItemId : Any, ItemValue : Any>(
      * - Update: Sets the new value and load state to Loaded.
      * - Clear: Clears the value and sets load state to Loaded.
      */
+    @Stable
     private inner class UpdatingItemImpl(
         private val itemId: ItemId
     ) : UpdatingItem<ItemId, ItemValue> {
 
         // Internal state for this item
         private val _state = MutableStateFlow(
-            UpdatingItem.ItemState<ItemValue>(value = null, loadState = UpdatingItemLoadState.Initial)
+            UpdatingItem.ItemState<ItemValue>(value = null, loadState = UpdatingItem.LoadState.Initial)
         )
 
         // Start a Molecule composition once
@@ -99,32 +99,32 @@ internal class DefaultNormalizer<ItemId : Any, ItemValue : Any>(
             val oldValue = current.value
             if (oldValue != newValue) {
                 // We have a new or changed value, mark it as loaded
-                _state.value = UpdatingItem.ItemState(newValue, UpdatingItemLoadState.Loaded)
+                _state.value = UpdatingItem.ItemState(newValue, UpdatingItem.LoadState.Loaded)
             }
         }
 
-        override suspend fun dispatch(action: UpdatingItemAction<ItemValue>) {
+        override suspend fun dispatch(action: UpdatingItem.Action<ItemValue>) {
             when (action) {
-                is UpdatingItemAction.Refresh -> {
+                is UpdatingItem.Action.Refresh -> {
                     // The item is being refreshed:
                     // - Clear value
                     // - Set loadState to Loading
-                    _state.value = UpdatingItem.ItemState(value = null, loadState = UpdatingItemLoadState.Loading)
+                    _state.value = UpdatingItem.ItemState(value = null, loadState = UpdatingItem.LoadState.Loading)
                 }
 
-                is UpdatingItemAction.Clear -> {
+                is UpdatingItem.Action.Clear -> {
                     // Clear the item:
                     // - value = null
                     // - loadState = Loaded (or considered as empty but stable)
-                    _state.value = UpdatingItem.ItemState(value = null, loadState = UpdatingItemLoadState.Loaded)
+                    _state.value = UpdatingItem.ItemState(value = null, loadState = UpdatingItem.LoadState.Loaded)
                 }
 
-                is UpdatingItemAction.Update<*> -> {
+                is UpdatingItem.Action.Update<*> -> {
                     @Suppress("UNCHECKED_CAST")
                     val typedValue = action.value as ItemValue
                     // Update the item's value:
                     // - Set loadState to Loaded
-                    _state.value = UpdatingItem.ItemState(value = typedValue, loadState = UpdatingItemLoadState.Loaded)
+                    _state.value = UpdatingItem.ItemState(value = typedValue, loadState = UpdatingItem.LoadState.Loaded)
                 }
             }
         }
@@ -135,7 +135,7 @@ internal class DefaultNormalizer<ItemId : Any, ItemValue : Any>(
         override val stateFlow: StateFlow<UpdatingItem.ItemState<ItemValue>> = moleculeFlow
 
         @Composable
-        private fun UpdatingItemPresenter(state:  MutableStateFlow<UpdatingItem.ItemState<ItemValue>>): UpdatingItem.ItemState<ItemValue> {
+        private fun UpdatingItemPresenter(state: MutableStateFlow<UpdatingItem.ItemState<ItemValue>>): UpdatingItem.ItemState<ItemValue> {
             // By collecting the state in Compose, we get recompositions
             // only when the state changes for this particular item.
             val currentState = state.collectAsState()

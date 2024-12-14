@@ -1,12 +1,10 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package dev.mattramotar.updatingitem.runtime.test
+package dev.mattramotar.updatingitem.runtime.normalizer
 
 import app.cash.molecule.RecompositionMode
 import app.cash.turbine.test
-import dev.mattramotar.updatingitem.runtime.UpdatingItemAction
-import dev.mattramotar.updatingitem.runtime.UpdatingItemLoadState
-import dev.mattramotar.updatingitem.runtime.impl.DefaultNormalizer
+import dev.mattramotar.updatingitem.runtime.UpdatingItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -129,28 +127,28 @@ class DefaultNormalizerTest {
         updatingItem.stateFlow.test {
 
             val actual0 = awaitItem()
-            assertEquals(UpdatingItemLoadState.Initial, actual0.loadState)
+            assertEquals(UpdatingItem.LoadState.Initial, actual0.loadState)
             assertEquals(null, actual0.value)
 
             val actual1 = awaitItem()
-            assertEquals(UpdatingItemLoadState.Loaded, actual1.loadState)
+            assertEquals(UpdatingItem.LoadState.Loaded, actual1.loadState)
             assertEquals("A", actual1.value?.content)
 
-            updatingItem.dispatch(UpdatingItemAction.Refresh)
+            updatingItem.dispatch(UpdatingItem.Action.Refresh)
             val actual2 = awaitItem()
             assertNull(actual2.value)
-            assertEquals(UpdatingItemLoadState.Loading, actual2.loadState)
+            assertEquals(UpdatingItem.LoadState.Loading, actual2.loadState)
 
-            val action = UpdatingItemAction.Update(item.copy(content = "A2"))
+            val action = UpdatingItem.Action.Update(item.copy(content = "A2"))
             updatingItem.dispatch(action)
             val actual3 = awaitItem()
             assertEquals("A2", actual3.value?.content)
-            assertEquals(UpdatingItemLoadState.Loaded, actual3.loadState)
+            assertEquals(UpdatingItem.LoadState.Loaded, actual3.loadState)
 
-            updatingItem.dispatch(UpdatingItemAction.Clear)
+            updatingItem.dispatch(UpdatingItem.Action.Clear)
             val actual4 = awaitItem()
             assertNull(actual4.value)
-            assertEquals(UpdatingItemLoadState.Loaded, actual4.loadState)
+            assertEquals(UpdatingItem.LoadState.Loaded, actual4.loadState)
         }
     }
 }

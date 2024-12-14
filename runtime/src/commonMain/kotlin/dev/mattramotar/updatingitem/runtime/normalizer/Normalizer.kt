@@ -1,4 +1,4 @@
-package dev.mattramotar.updatingitem.runtime.impl
+package dev.mattramotar.updatingitem.runtime.normalizer
 
 import dev.mattramotar.updatingitem.runtime.UpdatingItem
 import kotlinx.coroutines.flow.StateFlow

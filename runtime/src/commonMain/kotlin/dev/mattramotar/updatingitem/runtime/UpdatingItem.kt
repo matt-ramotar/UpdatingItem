@@ -1,6 +1,7 @@
 package dev.mattramotar.updatingitem.runtime
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -11,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
  * @param ItemId A stable, unique identifier type for the item.
  * @param ItemValue The type of the underlying data/value associated with this item.
  */
+@Stable
 interface UpdatingItem<ItemId : Any, ItemValue : Any> {
 
     /**
@@ -34,9 +36,9 @@ interface UpdatingItem<ItemId : Any, ItemValue : Any> {
      * This function is typically called from event handlers or business logic in a unidirectional
      * data flow (UDF) architecture.
      *
-     * @param action The [UpdatingItemAction] to apply to this item.
+     * @param action The [Action] to apply to this item.
      */
-    suspend fun dispatch(action: UpdatingItemAction<ItemValue>)
+    suspend fun dispatch(action: Action<ItemValue>)
 
     /**
      * Represents the current state of an item, containing its value (if available) and load state.
@@ -46,57 +48,58 @@ interface UpdatingItem<ItemId : Any, ItemValue : Any> {
      */
     class ItemState<ItemValue : Any>(
         val value: ItemValue?,
-        val loadState: UpdatingItemLoadState
+        val loadState: LoadState
     )
+
+    /**
+     * Actions that can be dispatched to an item to alter its state or request changes.
+     */
+    sealed interface Action<out ItemValue : Any> {
+        /**
+         * Requests a refresh of the item from its source.
+         */
+        data object Refresh : Action<Nothing>
+
+        /**
+         * Clears the item from memory or resets its state.
+         */
+        data object Clear : Action<Nothing>
+
+        /**
+         * Updates the item's value directly.
+         *
+         * @property value The new item value.
+         */
+        data class Update<ItemValue : Any>(val value: ItemValue) :
+            Action<ItemValue>
+    }
+
+    /**
+     * Represents the load state of a single item.
+     */
+    sealed interface LoadState {
+        /**
+         * The initial state.
+         */
+        data object Initial : LoadState
+
+        /**
+         * The item is fully loaded and available.
+         */
+        data object Loaded : LoadState
+
+        /**
+         * The item is currently loading or refreshing.
+         */
+        data object Loading : LoadState
+
+        /**
+         * The item failed to load or update due to the given [throwable].
+         *
+         * @property throwable The error encountered while loading.
+         */
+        data class Error(val throwable: Throwable) : LoadState
+    }
 }
 
 
-/**
- * Actions that can be dispatched to an item to alter its state or request changes.
- */
-sealed interface UpdatingItemAction<out ItemValue : Any> {
-    /**
-     * Requests a refresh of the item from its source.
-     */
-    data object Refresh : UpdatingItemAction<Nothing>
-
-    /**
-     * Clears the item from memory or resets its state.
-     */
-    data object Clear : UpdatingItemAction<Nothing>
-
-    /**
-     * Updates the item's value directly.
-     *
-     * @property value The new item value.
-     */
-    data class Update<ItemValue : Any>(val value: ItemValue) :
-        UpdatingItemAction<ItemValue>
-}
-
-/**
- * Represents the load state of a single item.
- */
-sealed interface UpdatingItemLoadState {
-    /**
-     * The initial state.
-     */
-    data object Initial : UpdatingItemLoadState
-
-    /**
-     * The item is fully loaded and available.
-     */
-    data object Loaded : UpdatingItemLoadState
-
-    /**
-     * The item is currently loading or refreshing.
-     */
-    data object Loading : UpdatingItemLoadState
-
-    /**
-     * The item failed to load or update due to the given [throwable].
-     *
-     * @property throwable The error encountered while loading.
-     */
-    data class Error(val throwable: Throwable) : UpdatingItemLoadState
-}

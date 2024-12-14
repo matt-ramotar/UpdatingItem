@@ -23,7 +23,6 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
             apply("org.jetbrains.kotlin.multiplatform")
             apply("dev.mokkery")
             apply("org.jetbrains.kotlinx.kover")
-            apply("com.vanniktech.maven.publish")
         }
 
         version = libs.findVersion("updatingitem")
@@ -95,8 +94,6 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 }
             }
         }
-
-        configureMavenPublishing()
     }
 }
 
@@ -121,9 +118,4 @@ private fun Project.addKspDependencyForAllTargets(
                 )
             }
     }
-}
-
-fun Project.configureMavenPublishing() = extensions.configure<MavenPublishBaseExtension> {
-    publishToMavenCentral(CENTRAL_PORTAL, automaticRelease = true)
-    signAllPublications()
 }

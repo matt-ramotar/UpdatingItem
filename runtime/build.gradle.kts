@@ -1,5 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.vanniktech.maven.publish.SonatypeHost.Companion.CENTRAL_PORTAL
 import dev.mattramotar.updatingitem.tooling.extensions.android
 
 plugins {
@@ -7,6 +8,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     id("plugin.updatingitem.android.library")
     id("plugin.updatingitem.kotlin.multiplatform")
+    alias(libs.plugins.maven.publish)
 }
 
 android {
@@ -23,10 +25,15 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kotlinx.coroutines.core)
-                implementation(compose.runtime)
+                api(compose.runtime)
+                api(libs.kotlinx.coroutines.core)
                 implementation(libs.molecule.runtime)
             }
         }
     }
+}
+
+mavenPublishing {
+    publishToMavenCentral(CENTRAL_PORTAL, automaticRelease = true)
+    signAllPublications()
 }
